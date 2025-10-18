@@ -6,20 +6,15 @@ torch.manual_seed(1337)
 
 with open('./data/SHAKESPEARE', 'r', encoding='utf-8') as data_file:
   _text = data_file.read()
-  _vocab = sorted(list(set(_text)))
-data_tool = SimpleNamespace(
-    c2i = { c:i for i, c in enumerate(_vocab) },
-    i2c = { i:c for i, c in enumerate(_vocab) },
-)
-encode = lambda txt: [data_tool.c2i[c] for c in txt]
-decode = lambda vec: ''.join([data_tool.i2c[i] for i in vec])
-_data = torch.tensor(encode(_text), dtype=torch.long)
-_1st_split = int(0.9 * _data.shape[0])
-data_sets = SimpleNamespace(
-    training_data = _data[:_1st_split],
-    validation_data = _data[_1st_split:]
-)
 
+_vocab = sorted(list(set(_text)))
+_c2i = { c:i for i, c in enumerate(_vocab) }
+_i2c = { i:c for i, c in enumerate(_vocab) }
+
+data_tool = SimpleNamespace(
+    encode = lambda txt: [_c2i[c] for c in txt],
+    decode = lambda vec: ''.join([_i2c[i] for i in vec])
+)
 
 def _get_device():
     for device in [torch.cuda, torch.mps]:
@@ -36,6 +31,14 @@ hyper_params = SimpleNamespace(
     learning_rate = 1e-3,
     training_epochs = 10**4,
     vocab_size = len(_vocab),
+)
+
+_data = torch.tensor(data_tool.encode(_text), dtype=torch.long)
+_data_split = int(0.9 * _data.shape[0])
+
+data_sets = SimpleNamespace(
+    training_data = _data[:_data_split],
+    validation_data = _data[_data_split:]
 )
 
 def make_batch(data):

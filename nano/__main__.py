@@ -4,7 +4,8 @@ import torch.nn as nn
 from torch.nn import functional as F
 
 from . import hyper_params, data_sets, data_tool
-from . import decode, make_batch, estimate_loss
+from . import make_batch, estimate_loss
+
 
 class BigramLM(nn.Module):
     def __init__(self, vocab_size):
@@ -30,7 +31,8 @@ class BigramLM(nn.Module):
             x = torch.cat((x, y_hat), dim=1)
         return x
 
-def train(model):
+
+def do_train(model):
     optimizer = torch.optim.AdamW(model.parameters(), lr=hyper_params.learning_rate)
     for epoch in range(hyper_params.training_epochs):
         if epoch % hyper_params.eval_interval == 0:
@@ -49,9 +51,10 @@ def train(model):
 def main():
     model = BigramLM(hyper_params.vocab_size)
     model = model.to(hyper_params.device)
-    train(model)
+    do_train(model)
     context = torch.zeros((1, 1), dtype=torch.long, device=hyper_params.device)
-    print(decode(model.generate(context, tokens=500)[0].tolist()))
+    print(data_tool.decode(model.generate(context, tokens=500)[0].tolist()))
+
 
 if __name__ == "__main__":
     main()
