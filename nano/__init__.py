@@ -29,8 +29,9 @@ hyper_params = SimpleNamespace(
     eval_iters = 200,
     eval_interval = 300,
     learning_rate = 1e-3,
-    training_epochs = 10**4,
+    training_epochs = 10**5,
     vocab_size = len(_vocab),
+    embed_size = 32,
 )
 
 _data = torch.tensor(data_tool.encode(_text), dtype=torch.long)
