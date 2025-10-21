@@ -24,14 +24,17 @@ def _get_device():
 
 hyper_params = SimpleNamespace(
     device = _get_device(),
-    batch_size = 32,
-    block_size = 8,
+    dropout = 0.2,
+    heads_count = 6,
+    layer_count = 6,
+    batch_size = 64,
     eval_iters = 200,
     eval_interval = 300,
-    learning_rate = 1e-3,
-    training_epochs = 10**5,
+    learning_rate = 3e-4,
+    max_steps = 5000,
     vocab_size = len(_vocab),
-    embed_size = 32,
+    embeddings_ndim = 384,
+    context_window_length = 256,
 )
 
 _data = torch.tensor(data_tool.encode(_text), dtype=torch.long)
@@ -43,10 +46,12 @@ data_sets = SimpleNamespace(
 )
 
 def make_batch(data):
-    last_possible_index = (data.shape[0] - hyper_params.block_size) - 1
+    last_possible_index = (data.shape[0] - hyper_params.context_window_length) - 1
     random_indexes = torch.randint(last_possible_index + 1, (hyper_params.batch_size,))
-    Xs_batch = torch.stack([data[index:index + hyper_params.block_size] for index in random_indexes])
-    Ys_batch = torch.stack([data[index + 1:index + hyper_params.block_size + 1] for index in random_indexes])
+    Xs_batch = torch.stack([data[index:index + hyper_params.context_window_length]
+                            for index in random_indexes])
+    Ys_batch = torch.stack([data[index + 1:index + hyper_params.context_window_length + 1]
+                            for index in random_indexes])
     return Xs_batch.to(hyper_params.device), Ys_batch.to(hyper_params.device)
 
 @torch.no_grad()
