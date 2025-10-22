@@ -1,0 +1,14 @@
+- name: Install Essentials
+  hosts: all
+  become: yes
+  tasks:
+    - name: Update apt package cache
+      apt:
+        update_cache: yes
+    - name: Install basic tooling
+      apt:
+        name:
+          - curl
+          - bzip2
+        state: present
+        update_cache: yes

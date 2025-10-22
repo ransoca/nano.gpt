@@ -1,0 +1,15 @@
+---
+- name: Install nano.gpt
+  hosts: all
+  become: yes
+  vars:
+    nano_code: "{{ ansible_code }}"
+    nano_user: "{{ ansible_user }}"
+  tasks:
+    - name: Setup conda environment for nano
+      shell: "/opt/anaconda/bin/conda create --file environment.yml python:3.10"
+      args:
+        chdir: "{{ nano_code }}"
+      environment:
+        CONDA_PLUGINS_AUTO_ACCEPT_TOS: "yes"
+      become_user: "{{ nano_user }}"
