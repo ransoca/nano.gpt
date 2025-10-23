@@ -1,0 +1,8 @@
+channels:
+  - pytorch
+  - conda-forge
+  - defaults
+dependencies:
+  - numpy=2.2.6
+  - python=3.10.18
+  - pytorch=2.5.1

@@ -4,32 +4,56 @@
   become: yes
   vars:
     model_exec: "{{ model_nano_gpt_exec }}"
+    model_demo: "{{ model_nano_gpt_demo }}"
     model_data: "{{ model_nano_gpt_data }}"
     model_user: "{{ model_nano_gpt_user }}"
   tasks:
-    - name: Deploy exec for nano.gpt using rsync
-      ansible.posix.synchronize:
-        src: "{{ playbook_dir }}/../"
-        dest: "{{ model_exec }}"
-        delete: yes
-        recursive: yes
-        rsync_opts:
-          - "--exclude=.ansible"
-          - "--exclude=.git"
-          - "--exclude=.gitignore"
-          - "--exclude=.vagrant"
-          - "--exclude=data"
-          - "--exclude=*environment.yml"
-          - "--exclude=*.pyc"
-          - "--exclude=__pycache__"
-          - "--exclude=Vagrantfile"
-      become_user: "{{ model_user }}"
     - name: Store data for nano.gpt using rsync
       ansible.posix.synchronize:
         src: "{{ playbook_dir }}/../data/"
         dest: "{{ model_data }}"
         delete: yes
         recursive: yes
+      become_user: "{{ model_user }}"
+    - name: Deploy demo for nano.gpt using rsync
+      ansible.posix.synchronize:
+        src: "{{ playbook_dir }}/../demo/"
+        dest: "{{ model_demo }}"
+        delete: yes
+        recursive: yes
+        rsync_opts:
+          - "--exclude=*.pyc"
+          - "--exclude=__pycache__"
+      become_user: "{{ model_user }}"
+    - name: Deploy exec for nano.gpt using rsync
+      ansible.posix.synchronize:
+        src: "{{ playbook_dir }}/../exec/"
+        dest: "{{ model_exec }}"
+        delete: yes
+        recursive: yes
+        rsync_opts:
+          - "--exclude=*.pyc"
+          - "--exclude=__pycache__"
+      become_user: "{{ model_user }}"
+    - name: Deploy cfgs for nano.gpt using rsync
+      ansible.posix.synchronize:
+        src: "{{ playbook_dir }}/../configuration.rel.ini"
+        dest: "{{ model_exec }}/configuration.ini"
+        delete: yes
+        recursive: yes
+        rsync_opts:
+          - "--exclude=*.pyc"
+          - "--exclude=__pycache__"
+      become_user: "{{ model_user }}"
+    - name: Deploy deps for nano.gpt using rsync
+      ansible.posix.synchronize:
+        src: "{{ playbook_dir }}/../requirements.rel.txt"
+        dest: "{{ model_exec }}/requirements.txt"
+        delete: yes
+        recursive: yes
+        rsync_opts:
+          - "--exclude=*.pyc"
+          - "--exclude=__pycache__"
       become_user: "{{ model_user }}"
     - name: Install deps for nano.gpt using pip
       shell: "python -m pip install --requirement requirements.txt"
