@@ -18,7 +18,6 @@
           - "--exclude=.git"
           - "--exclude=.gitignore"
           - "--exclude=.vagrant"
-          - "--exclude=demo"
           - "--exclude=data"
           - "--exclude=*environment.yml"
           - "--exclude=*.pyc"
