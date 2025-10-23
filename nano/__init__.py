@@ -25,16 +25,16 @@ def _get_device():
 hyper_params = SimpleNamespace(
     device = _get_device(),
     dropout = 0.2,
-    heads_count = 6,
-    layer_count = 6,
-    batch_size = 64,
+    heads_count = 4,
+    layer_count = 1,
+    batch_size = 4,
     eval_iters = 200,
     eval_interval = 300,
-    learning_rate = 3e-4,
+    learning_rate = 1e-3,
     max_steps = 5000,
     vocab_size = len(_vocab),
-    embeddings_ndim = 384,
-    context_window_length = 256,
+    embeddings_ndim = 4,
+    context_window_length = 8,
 )
 
 _data = torch.tensor(data_tool.encode(_text), dtype=torch.long)
