@@ -4,7 +4,7 @@ from types import SimpleNamespace
 
 torch.manual_seed(1337)
 
-with open('./data/SHAKESPEARE', 'r', encoding='utf-8') as data_file:
+with open('/data/SHAKESPEARE', 'r', encoding='utf-8') as data_file:
   _text = data_file.read()
 
 _vocab = sorted(list(set(_text)))

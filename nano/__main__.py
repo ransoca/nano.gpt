@@ -6,6 +6,8 @@ from torch.nn import functional as F
 from . import hyper_params, data_sets, data_tool
 from . import make_batch, estimate_loss
 
+from pprint import pprint
+
 
 class SingleSelfAttention(nn.Module):
     def __init__(self, ndim, embeddings_ndim, embeddings_size):
@@ -172,4 +174,5 @@ def main():
 
 
 if __name__ == "__main__":
+    pprint(hyper_params)
     main()

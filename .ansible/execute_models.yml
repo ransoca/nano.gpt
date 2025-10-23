@@ -3,16 +3,37 @@
   hosts: all
   become: yes
   vars:
-    model_libs: "{{ model_nano_gpt_libs }}"
+    model_exec: "{{ model_nano_gpt_exec }}"
+    model_data: "{{ model_nano_gpt_data }}"
     model_user: "{{ model_nano_gpt_user }}"
   tasks:
+    - name: Deploy exec for nano.gpt using rsync
+      ansible.posix.synchronize:
+        src: "{{ playbook_dir }}/../"
+        dest: "{{ model_exec }}"
+        delete: yes
+        recursive: yes
+        rsync_opts:
+          - "--exclude=.ansible"
+          - "--exclude=.git"
+          - "--exclude=.gitignore"
+          - "--exclude=.vagrant"
+          - "--exclude=demo"
+          - "--exclude=data"
+          - "--exclude=*environment.yml"
+          - "--exclude=*.pyc"
+          - "--exclude=__pycache__"
+          - "--exclude=Vagrantfile"
+      become_user: "{{ model_user }}"
+    - name: Store data for nano.gpt using rsync
+      ansible.posix.synchronize:
+        src: "{{ playbook_dir }}/../data/"
+        dest: "{{ model_data }}"
+        delete: yes
+        recursive: yes
+      become_user: "{{ model_user }}"
     - name: Install deps for nano.gpt using pip
       shell: "python -m pip install --requirement requirements.txt"
       args:
-        chdir: "{{ model_libs }}"
-      become_user: "{{ model_user }}"
-    - name: Execute nano.gpt training and evaluation
-      shell: "python -m nano"
-      args:
-        chdir: "{{ model_libs }}"
+        chdir: "{{ model_exec }}"
       become_user: "{{ model_user }}"
