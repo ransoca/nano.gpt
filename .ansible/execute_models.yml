@@ -1,0 +1,18 @@
+---
+- name: Training and Evaluation of ML models
+  hosts: all
+  become: yes
+  vars:
+    model_libs: "{{ model_nano_gpt_libs }}"
+    model_user: "{{ model_nano_gpt_user }}"
+  tasks:
+    - name: Install deps for nano.gpt using pip
+      shell: "python -m pip install --requirement requirements.txt"
+      args:
+        chdir: "{{ model_libs }}"
+      become_user: "{{ model_user }}"
+    - name: Execute nano.gpt training and evaluation
+      shell: "python -m nano"
+      args:
+        chdir: "{{ model_libs }}"
+      become_user: "{{ model_user }}"

@@ -1,4 +1,4 @@
-- name: Install Essentials
+- name: Configure system tooling
   hosts: all
   become: yes
   tasks:

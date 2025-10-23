@@ -1,0 +1,72 @@
+---
+- name: Install specific python version with pip
+  hosts: all
+  become: yes
+  gather_facts: yes
+  vars:
+    python_version: "{{ system_python_version }}"
+    model_user: "{{ model_nano_gpt_user }}"
+  tasks:
+    - name: Add deadsnakes PPA repository
+      apt_repository:
+        repo: ppa:deadsnakes/ppa
+        state: present
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+    - name: Install Python {{ python_version }} and dependencies
+      apt:
+        name:
+          - python{{ python_version }}
+          - python{{ python_version }}-dev
+          - python{{ python_version }}-venv
+          - python{{ python_version }}-distutils
+        state: present
+        update_cache: yes
+      when: ansible_os_family == "Debian"
+    - name: Download get-pip.py script
+      get_url:
+        url: https://bootstrap.pypa.io/get-pip.py
+        dest: /tmp/get-pip.py
+        mode: '0644'
+    - name: Install pip for Python {{ python_version }}
+      command: python{{ python_version }} /tmp/get-pip.py
+      args:
+        creates: /usr/local/lib/python{{ python_version }}/dist-packages/pip
+    - name: Remove get-pip.py script
+      file:
+        path: /tmp/get-pip.py
+        state: absent
+    - name: Create python symlink
+      file:
+        src: /usr/bin/python{{ python_version }}
+        dest: /usr/local/bin/python
+        state: link
+        force: yes
+    - name: Create pip symlink
+      file:
+        src: /usr/local/bin/pip{{ python_version }}
+        dest: /usr/local/bin/pip
+        state: link
+        force: yes
+      ignore_errors: yes
+    - name: Verify python {{ python_version }} installation
+      command: python --version
+      register: python_version_output
+      changed_when: false
+      become_user: "{{ model_user }}"
+    - name: Verify pip installation
+      command: pip --version
+      register: pip_version_output
+      changed_when: false
+      become_user: "{{ model_user }}"
+    - name: Verify pip installation for Python {{ python_version }}
+      command: python -m pip --version
+      register: python_pip_version_output
+      changed_when: false
+      become_user: "{{ model_user }}"
+    - name: Display python and pip versions
+      debug:
+        msg:
+          - "python version: {{ python_version_output.stdout }}"
+          - "pip version : {{ pip_version_output.stdout }}"
+          - "pip version for {{ python_version }}: {{ python_pip_version_output.stdout }}"

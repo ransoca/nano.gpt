@@ -1,9 +1,9 @@
 ---
-- name: Install tooling essentials
-  import_playbook: install_essentials.yml
+- name: Configure system
+  import_playbook: configure_system.yml
 
-- name: Install Anaconda
-  import_playbook: install_anaconda.yml
+- name: Install python
+  import_playbook: install_python.yml
 
-- name: Install nano.gpt
-  import_playbook: install_nanogpt.yml
+- name: Execute models
+  import_playbook: execute_models.yml
