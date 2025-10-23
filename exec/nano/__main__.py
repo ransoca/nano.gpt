@@ -133,9 +133,7 @@ class NanoNet(nn.Module):
 
 
 def do_train(model):
-    model_params = model.parameters()
-    print(f"{model_params=}")
-    optimizer = torch.optim.AdamW(model_params, lr=hyper_params.learning_rate)
+    optimizer = torch.optim.AdamW(model.parameters(), lr=hyper_params.learning_rate)
     for epoch in range(hyper_params.max_epochs):
         if epoch % model_monitor.eval_interval == 0:
             training_loss = estimate_loss(model, data_sets.training_data, model_monitor.eval_iters)
@@ -151,6 +149,8 @@ def do_train(model):
 def main():
     model = NanoNet()
     model = model.to(device)
+    print(model)
+    print(sum(param.numel() for param in model.parameters())/1e6, 'M parameters')
 
     model.train()
     do_train(model)

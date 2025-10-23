@@ -197,6 +197,7 @@ class GPTLanguageModel(nn.Module):
 
 model = GPTLanguageModel()
 m = model.to(device)
+print(m)
 # print the number of parameters in the model
 print(sum(p.numel() for p in m.parameters())/1e6, 'M parameters')
 

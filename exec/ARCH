@@ -1,0 +1,159 @@
+namespace(vocab_size=65, batch_size=64, context_window_length=256)
+namespace(max_epochs=5000, learning_rate=0.0003)
+namespace(dropout_ratio=0.2,
+          embeddings_ndim=384,
+          self_attention_heads_count=6,
+          self_attention_block_count=6)
+NanoNet(
+  (_tok_embd): Embedding(65, 384)
+  (_pos_embd): Embedding(256, 384)
+  (_atn_blks): Sequential(
+    (0): SelfAttentionBlock(
+      (_1st_ln): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+      (_mha): MultiHeadAttention(
+        (_heads): ModuleList(
+          (0-5): 6 x SingleSelfAttention(
+            (_Wk): Linear(in_features=384, out_features=64, bias=False)
+            (_Wq): Linear(in_features=384, out_features=64, bias=False)
+            (_Wv): Linear(in_features=384, out_features=64, bias=False)
+            (_dropout): Dropout(p=0.2, inplace=False)
+          )
+        )
+        (_projs): Linear(in_features=384, out_features=384, bias=True)
+        (_dropout): Dropout(p=0.2, inplace=False)
+      )
+      (_2nd_ln): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+      (_ffn): FeedForwardNetwork(
+        (_net): Sequential(
+          (0): Linear(in_features=384, out_features=1536, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=1536, out_features=384, bias=True)
+          (3): Dropout(p=0.2, inplace=False)
+        )
+      )
+    )
+    (1): SelfAttentionBlock(
+      (_1st_ln): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+      (_mha): MultiHeadAttention(
+        (_heads): ModuleList(
+          (0-5): 6 x SingleSelfAttention(
+            (_Wk): Linear(in_features=384, out_features=64, bias=False)
+            (_Wq): Linear(in_features=384, out_features=64, bias=False)
+            (_Wv): Linear(in_features=384, out_features=64, bias=False)
+            (_dropout): Dropout(p=0.2, inplace=False)
+          )
+        )
+        (_projs): Linear(in_features=384, out_features=384, bias=True)
+        (_dropout): Dropout(p=0.2, inplace=False)
+      )
+      (_2nd_ln): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+      (_ffn): FeedForwardNetwork(
+        (_net): Sequential(
+          (0): Linear(in_features=384, out_features=1536, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=1536, out_features=384, bias=True)
+          (3): Dropout(p=0.2, inplace=False)
+        )
+      )
+    )
+    (2): SelfAttentionBlock(
+      (_1st_ln): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+      (_mha): MultiHeadAttention(
+        (_heads): ModuleList(
+          (0-5): 6 x SingleSelfAttention(
+            (_Wk): Linear(in_features=384, out_features=64, bias=False)
+            (_Wq): Linear(in_features=384, out_features=64, bias=False)
+            (_Wv): Linear(in_features=384, out_features=64, bias=False)
+            (_dropout): Dropout(p=0.2, inplace=False)
+          )
+        )
+        (_projs): Linear(in_features=384, out_features=384, bias=True)
+        (_dropout): Dropout(p=0.2, inplace=False)
+      )
+      (_2nd_ln): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+      (_ffn): FeedForwardNetwork(
+        (_net): Sequential(
+          (0): Linear(in_features=384, out_features=1536, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=1536, out_features=384, bias=True)
+          (3): Dropout(p=0.2, inplace=False)
+        )
+      )
+    )
+    (3): SelfAttentionBlock(
+      (_1st_ln): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+      (_mha): MultiHeadAttention(
+        (_heads): ModuleList(
+          (0-5): 6 x SingleSelfAttention(
+            (_Wk): Linear(in_features=384, out_features=64, bias=False)
+            (_Wq): Linear(in_features=384, out_features=64, bias=False)
+            (_Wv): Linear(in_features=384, out_features=64, bias=False)
+            (_dropout): Dropout(p=0.2, inplace=False)
+          )
+        )
+        (_projs): Linear(in_features=384, out_features=384, bias=True)
+        (_dropout): Dropout(p=0.2, inplace=False)
+      )
+      (_2nd_ln): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+      (_ffn): FeedForwardNetwork(
+        (_net): Sequential(
+          (0): Linear(in_features=384, out_features=1536, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=1536, out_features=384, bias=True)
+          (3): Dropout(p=0.2, inplace=False)
+        )
+      )
+    )
+    (4): SelfAttentionBlock(
+      (_1st_ln): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+      (_mha): MultiHeadAttention(
+        (_heads): ModuleList(
+          (0-5): 6 x SingleSelfAttention(
+            (_Wk): Linear(in_features=384, out_features=64, bias=False)
+            (_Wq): Linear(in_features=384, out_features=64, bias=False)
+            (_Wv): Linear(in_features=384, out_features=64, bias=False)
+            (_dropout): Dropout(p=0.2, inplace=False)
+          )
+        )
+        (_projs): Linear(in_features=384, out_features=384, bias=True)
+        (_dropout): Dropout(p=0.2, inplace=False)
+      )
+      (_2nd_ln): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+      (_ffn): FeedForwardNetwork(
+        (_net): Sequential(
+          (0): Linear(in_features=384, out_features=1536, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=1536, out_features=384, bias=True)
+          (3): Dropout(p=0.2, inplace=False)
+        )
+      )
+    )
+    (5): SelfAttentionBlock(
+      (_1st_ln): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+      (_mha): MultiHeadAttention(
+        (_heads): ModuleList(
+          (0-5): 6 x SingleSelfAttention(
+            (_Wk): Linear(in_features=384, out_features=64, bias=False)
+            (_Wq): Linear(in_features=384, out_features=64, bias=False)
+            (_Wv): Linear(in_features=384, out_features=64, bias=False)
+            (_dropout): Dropout(p=0.2, inplace=False)
+          )
+        )
+        (_projs): Linear(in_features=384, out_features=384, bias=True)
+        (_dropout): Dropout(p=0.2, inplace=False)
+      )
+      (_2nd_ln): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+      (_ffn): FeedForwardNetwork(
+        (_net): Sequential(
+          (0): Linear(in_features=384, out_features=1536, bias=True)
+          (1): ReLU()
+          (2): Linear(in_features=1536, out_features=384, bias=True)
+          (3): Dropout(p=0.2, inplace=False)
+        )
+      )
+    )
+  )
+  (_lay_norm): LayerNorm((384,), eps=1e-05, elementwise_affine=True)
+  (_lin_head): Linear(in_features=384, out_features=65, bias=True)
+)
+10.788929 M parameters
