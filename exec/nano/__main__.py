@@ -148,9 +148,11 @@ def do_train(model):
 
 def main():
     model = NanoNet()
+    print(f"{model=}")
+    print(sum(param.numel() for param in model.parameters())/1e6, 'Million Parameters')
+
     model = model.to(device)
-    print(model)
-    print(sum(param.numel() for param in model.parameters())/1e6, 'M parameters')
+    print(f"{device=}")
 
     model.train()
     do_train(model)
