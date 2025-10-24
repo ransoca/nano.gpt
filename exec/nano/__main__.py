@@ -39,7 +39,7 @@ class SingleSelfAttention(nn.Module):
             self._mask[:T, :T] == 0,
             float('-inf')
         )
-        self_attention_probs = F.softmax(self_attention_weights, dim=1)
+        self_attention_probs = F.softmax(self_attention_weights, dim=-1)
         self_attention_probs = self._dropout(self_attention_probs)
         V = self._Wv(X)
         X = self_attention_probs @ V
